@@ -3,14 +3,17 @@
  * @NScriptType Suitelet
  * @NModuleScope SameAccount
  */
-define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 'N/runntime'],
+define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 'N/runtime'],
 
-	function (serverWidget, search, https, message, record) {
+
+	function (serverWidget, search, https, message, record, runtime) {
 
 		var SHIPPING_METHOD_URL = {
 			"fedex": "https://6241176.app.netsuite.com/app/accounting/print/hotprint.nl?regular=T&sethotprinter=T&id=SOINTERNALID&label=UPS%20Shipping%20Labels&printtype=fedexshippinglabel&trantype=itemship&auxtrans=IFINTERNALID",
 			"usps": "https://6241176.app.netsuite.com/app/accounting/print/hotprint.nl?regular=T&sethotprinter=T&id=SOINTERNALID&label=UPS%20Shipping%20Labels&printtype=uspsshippinglabel&trantype=itemship&auxtrans=IFINTERNALID"
 		}
+
+
 
 		function onRequest(context) {
 			try {
@@ -23,7 +26,8 @@ define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 
 					var allowRepeating = context.request.parameters.allowRepeating;
 					var selectOrderNo = context.request.parameters.selectOrderNo;
 					var waveNumber = context.request.parameters.waveNumber;
-					var userObject = runtime.getCurrentUser();
+					var userName = runtime.getCurrentUser().name;
+
 					if (allowRepeating == true || allowRepeating == 'true') {
 						allowRepeating = 'T';
 					} else {
@@ -31,6 +35,11 @@ define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 
 					}
 					var form = serverWidget.createForm({
 						title: 'Print Integrated Shipping Labels'
+					});
+					form.addField({
+						id: 'custpage_username',
+						type: serverWidget.FieldType.TEXT,
+						label: userName
 					});
 					form.addField({
 						id: 'custpage_item_barcode',
@@ -637,7 +646,7 @@ define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 
 					form.addButton({
 						id: 'custpage_print',
 						label: 'Print',
-						functionName: 'printLabel()'
+						functionName: 'print_reset()'
 					});
 					form.addButton({
 						id: 'reset',
@@ -667,6 +676,10 @@ define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 
 				log.error("Error in onRequest", err);
 			}
 
+		}
+
+		function print_reset(){
+			resetButton();
 		}
 
 		//	The function returns the search result array
