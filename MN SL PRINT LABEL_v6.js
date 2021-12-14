@@ -38,8 +38,8 @@ define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 
 					});
 					form.addField({
 						id: 'custpage_username',
-						type: serverWidget.FieldType.TEXT,
-						label: userName
+						type: serverWidget.FieldType.LABEL,
+						label: 'CURRENT USER: ' + userName
 					});
 					form.addField({
 						id: 'custpage_item_barcode',
