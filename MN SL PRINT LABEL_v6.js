@@ -3,7 +3,7 @@
  * @NScriptType Suitelet
  * @NModuleScope SameAccount
  */
-define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record'],
+define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record', 'N/runntime'],
 
 	function (serverWidget, search, https, message, record) {
 
@@ -23,6 +23,7 @@ define(['N/ui/serverWidget', 'N/search', 'N/https', 'N/ui/message', 'N/record'],
 					var allowRepeating = context.request.parameters.allowRepeating;
 					var selectOrderNo = context.request.parameters.selectOrderNo;
 					var waveNumber = context.request.parameters.waveNumber;
+					var userObject = runtime.getCurrentUser();
 					if (allowRepeating == true || allowRepeating == 'true') {
 						allowRepeating = 'T';
 					} else {
